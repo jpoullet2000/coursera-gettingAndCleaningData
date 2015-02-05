@@ -1,0 +1,82 @@
+---
+title: "Getting and Cleaning Data: Q2"
+author: "Jean-Baptiste Poullet"
+date: '2015-02-01'
+output: html_document
+---
+
+## Question 1
+
+```{r}
+library(httr)
+
+# 1. Find OAuth settings for github:
+#    http://developer.github.com/v3/oauth/
+oauth_endpoints("github")
+
+# 2. Register an application at https://github.com/settings/applications;
+#    Use any URL you would like for the homepage URL (http://github.com is fine)
+#    and http://localhost:1410 as the callback url
+#
+#    Insert your client ID and secret below - if secret is omitted, it will
+#    look it up in the GITHUB_CONSUMER_SECRET environmental variable.
+client_ID = "b80b25bd587a8a641329"
+client_secret = "0ea20330a5ec687d2eca1b288adff4287ee601ac"
+
+myapp <- oauth_app("github",key = client_ID, secret = client_secret)
+
+# 3. Get OAuth credentials
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+
+# 4. Use API
+## gtoken <- config(token = github_token)
+## req <- GET("https://api.github.com/rate_limit", gtoken)
+## stop_for_status(req)
+## content(req)
+gtoken <- config(token = github_token)
+req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
+stop_for_status(req)
+myList <- content(req)
+idx <- which(unlist(lapply(myList,function(x) x$name=='datasharing')))
+myList[[idx]]$name
+myList[[idx]]$created
+```
+## Question 2
+
+```{r}
+library(sqldf)
+acsfile <- file.path(getwd(),'AmericanCommunitySurvey.csv')
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv', destfile =acsfile, method='curl')
+acs <- read.csv(acsfile)
+sqldf("select pwgtp1 from acs where AGEP < 50")
+```
+
+
+## Question 3
+```{r}
+sqldf("select distinct AGEP from acs")
+```
+
+## Question 4
+```{r}
+# How many characters are in the 10th, 20th, 30th and 100th lines of HTML from this page: 
+library(httr)
+library(XML)
+url = "http://biostat.jhsph.edu/~jleek/contact.html" 
+html2 = GET(url)
+content2 = content(html2, as='text')
+parsehtml = htmlParse(content2,asText=TRUE)
+lines = strsplit(content2,'\n')[[1]]
+lapply(lines[c(10,20,30,100)],nchar)
+```
+
+
+## Question 5
+```{r}
+indGovFile = file.path(getwd(),"indGov")
+download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for", destfile = indGovFile, method='curl')
+lines <- readLines(indGovFile)
+lines.cleaned <- lapply(lines,function(x) gsub('-',' ',x))
+col4 <- unlist(lapply(lines.cleaned, function(x) strsplit(x,split="[, ]+")[[1]][5]))
+sum(as.numeric(col4),na.rm=TRUE)
+```

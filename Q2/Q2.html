@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Q2.html</title>
+
+</head>
+
+<body>
+
+<hr />
+
+<p>title: "Getting and Cleaning Data: Q2"
+author: "Jean-Baptiste Poullet"
+date: '2015-02-01'</p>
+
+<h2>output: html_document</h2>
+
+<h2>Question 1</h2>
+
+<p>```{r}
+library(httr)</p>
+
+<h1>1. Find OAuth settings for github:</h1>
+
+<h1>http://developer.github.com/v3/oauth/</h1>
+
+<p>oauth_endpoints("github")</p>
+
+<h1>2. Register an application at https://github.com/settings/applications;</h1>
+
+<h1>Use any URL you would like for the homepage URL (http://github.com is fine)</h1>
+
+<h1>and http://localhost:1410 as the callback url</h1>
+
+<p>#</p>
+
+<h1>Insert your client ID and secret below - if secret is omitted, it will</h1>
+
+<h1>look it up in the GITHUB<em>CONSUMER</em>SECRET environmental variable.</h1>
+
+<p>client<em>ID = "b80b25bd587a8a641329"
+client</em>secret = "0ea20330a5ec687d2eca1b288adff4287ee601ac"</p>
+
+<p>myapp &lt;- oauth<em>app("github",key = client</em>ID, secret = client_secret)</p>
+
+<h1>3. Get OAuth credentials</h1>
+
+<p>github<em>token &lt;- oauth2.0</em>token(oauth_endpoints("github"), myapp)</p>
+
+<h1>4. Use API</h1>
+
+<h2>gtoken &lt;- config(token = github_token)</h2>
+
+<h2>req &lt;- GET("https://api.github.com/rate_limit", gtoken)</h2>
+
+<h2>stop<em>for</em>status(req)</h2>
+
+<h2>content(req)</h2>
+
+<p>gtoken &lt;- config(token = github<em>token)
+req &lt;- GET("https://api.github.com/users/jtleek/repos", gtoken)
+stop</em>for_status(req)
+myList &lt;- content(req)
+idx &lt;- which(unlist(lapply(myList,function(x) x$name=='datasharing')))
+myList[[idx]]$name
+myList[[idx]]$created
+```</p>
+
+<h2>Question 2</h2>
+
+<p><code>{r}
+library(sqldf)
+acsfile &lt;- file.path(getwd(),'AmericanCommunitySurvey.csv')
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv', destfile =acsfile, method='curl')
+acs &lt;- read.csv(acsfile)
+sqldf("select pwgtp1 from acs where AGEP &lt; 50")
+</code></p>
+
+<h2>Question 3</h2>
+
+<p><code>{r}
+sqldf("select distinct AGEP from acs")
+</code></p>
+
+<h2>Question 4</h2>
+
+<p>```{r}</p>
+
+<h1>How many characters are in the 10th, 20th, 30th and 100th lines of HTML from this page:</h1>
+
+<p>library(httr)
+library(XML)
+url = "http://biostat.jhsph.edu/~jleek/contact.html" 
+html2 = GET(url)
+content2 = content(html2, as='text')
+parsehtml = htmlParse(content2,asText=TRUE)
+lines = strsplit(content2,'\n')[[1]]
+lapply(lines[c(10,20,30,100)],nchar)
+```</p>
+
+<h2>Question 5</h2>
+
+<p><code>{r}
+indGovFile = file.path(getwd(),"indGov")
+download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for", destfile = indGovFile, method='curl')
+lines &lt;- readLines(indGovFile)
+lines.cleaned &lt;- lapply(lines,function(x) gsub('-',' ',x))
+col4 &lt;- unlist(lapply(lines.cleaned, function(x) strsplit(x,split="[, ]+")[[1]][5]))
+sum(as.numeric(col4),na.rm=TRUE)
+</code></p>
+
+</body>
+</html>

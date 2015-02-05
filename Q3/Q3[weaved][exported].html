@@ -1,0 +1,344 @@
+<h2 id="question-1">Question 1</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table)
+AmericanCommunitySurveyFile &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(),<span class="st">&quot;AmericanCommunitySurvey&quot;</span>)
+<span class="kw">download.file</span>(<span class="st">&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv&quot;</span>, <span class="dt">destfile =</span> AmericanCommunitySurveyFile ,<span class="dt">method=</span><span class="st">&#39;curl&#39;</span>)
+df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(AmericanCommunitySurveyFile)
+DT &lt;-<span class="st"> </span><span class="kw">as.data.table</span>(df)
+DT[,agricultureLogical:<span class="er">=</span>(ACR==<span class="dv">3</span> &amp;<span class="st"> </span>AGS ==<span class="dv">6</span>)]</code></pre>
+<pre><code>##       RT SERIALNO DIVISION PUMA REGION ST  ADJUST WGTP NP TYPE ACR AGS BDS
+##    1:  H      186        8  700      4 16 1015675   89  4    1   1  NA   4
+##    2:  H      306        8  700      4 16 1015675  310  1    1  NA  NA   1
+##    3:  H      395        8  100      4 16 1015675  106  2    1   1  NA   3
+##    4:  H      506        8  700      4 16 1015675  240  4    1   1  NA   4
+##    5:  H      835        8  800      4 16 1015675  118  4    1   2   1   5
+##   ---                                                                     
+## 6492:  H  1357238        8  300      4 16 1015675  108  2    1  NA  NA   2
+## 6493:  H  1357340        8  400      4 16 1015675   58  2    1   1  NA   3
+## 6494:  H  1357874        8  900      4 16 1015675   32  2    1   1  NA   2
+## 6495:  H  1357880        8  500      4 16 1015675  123  2    1   2   1   1
+## 6496:  H  1358490        8  700      4 16 1015675  353  2    1  NA  NA   2
+##       BLD BUS CONP ELEP FS FULP GASP HFL INSP KIT MHP MRGI MRGP MRGT MRGX
+##    1:   2   2   NA  180  0    2    3   3  600   1  NA    1 1300    1    1
+##    2:   7  NA   NA   60  0    2    3   3   NA   1  NA   NA   NA   NA   NA
+##    3:   2   2   NA   70  0    2   30   1  200   1  NA   NA   NA   NA    3
+##    4:   2   2   NA   40  0    2   80   1  200   1  NA    1  860    1    1
+##    5:   2   2   NA  250  0    2    3   3  700   1  NA    1 1900    1    1
+##   ---                                                                    
+## 6492:   5  NA   NA   40  0    1    3   3   NA   1  NA   NA   NA   NA   NA
+## 6493:   2   2   NA   30  0    2   70   1  260   1  NA   NA   NA   NA    3
+## 6494:   2   2   NA   70  0    2  120   1  420   1  NA    2  400    2    1
+## 6495:   2   2   NA  140  0    2    3   3   NA   1  NA   NA   NA   NA   NA
+## 6496:   7  NA   NA   30  0    2    3   3   NA   1  NA   NA   NA   NA   NA
+##       PLM RMS RNTM RNTP SMP TEL TEN VACS VAL VEH WATP YBL FES  FINCP FPARC
+##    1:   1   9   NA   NA  NA   1   1   NA  17   3  840   5   2 105600     2
+##    2:   1   2    2  600  NA   1   3   NA  NA   1    1   3  NA     NA    NA
+##    3:   1   7   NA   NA  NA   1   2   NA  18   2   50   5   7   9400     2
+##    4:   1   6   NA   NA 400   1   1   NA  19   3  500   2   1  66000     1
+##    5:   1   7   NA   NA 650   1   1   NA  20   5    2   3   1  93000     2
+##   ---                                                                     
+## 6492:   1   3    2  480  NA   2   3   NA  NA   1    1   2   2  -2600     4
+## 6493:   1   6   NA   NA  NA   1   2   NA  16   1  400   3   4  53200     4
+## 6494:   1   4   NA   NA 240   1   1   NA   6   2  410   9   3  18000     4
+## 6495:   1   3    2  600  NA   2   3   NA  NA   5    1   9   1  33000     4
+## 6496:   1   3    2  610  NA   1   3   NA  NA   2    1   3   5  32600     4
+##       GRNTP GRPIP HHL HHT  HINCP HUGCL HUPAC HUPAOC HUPARC LNGI MV NOC NPF
+##    1:    NA    NA   1   1 105600     0     2      2      2    1  4   2   4
+##    2:   660    23   1   4  34000     0     4      4      4    1  3   0  NA
+##    3:    NA    NA   1   3   9400     0     2      2      2    1  2   1   2
+##    4:    NA    NA   1   1  66000     0     1      1      1    1  3   2   4
+##    5:    NA    NA   1   1  93000     0     2      2      2    1  1   1   4
+##   ---                                                                     
+## 6492:   520    NA   1   1  -2600     0     4      4      4    1  1   0   2
+## 6493:    NA    NA   1   1  53200     0     4      4      4    1  5   0   2
+## 6494:    NA    NA   1   1  18000     0     4      4      4    1  4   0   2
+## 6495:   740    27   1   1  33000     0     4      4      4    1  2   0   2
+## 6496:   640    24   1   2  32600     0     4      4      4    1  3   0   2
+##       NPP NR NRC OCPIP PARTNER PSF R18 R60 R65 RESMODE SMOCP SMX SRNT SVAL
+##    1:   0  0   2    18       0   0   1   0   0       1  1550   3    0    1
+##    2:   0  0   0    NA       0   0   0   0   0       2    NA  NA    1    0
+##    3:   0  0   1    23       0   0   1   0   0       1   179  NA    0    1
+##    4:   0  0   2    26       0   0   1   0   0       2  1422   1    0    1
+##    5:   0  0   1    36       0   0   1   0   0       1  2800   1    0    1
+##   ---                                                                     
+## 6492:   0  0   0    NA       0   0   0   0   0       1    NA  NA    1    0
+## 6493:   0  0   0     6       0   0   0   2   2       1   273  NA    0    1
+## 6494:   0  0   0    63       0   0   0   2   2       1   949   2    0    1
+## 6495:   0  0   0    NA       0   0   0   0   0       1    NA  NA    1    0
+## 6496:   0  0   0    NA       0   0   0   0   0       2    NA  NA    1    0
+##       TAXP WIF WKEXREL WORKSTAT FACRP FAGSP FBDSP FBLDP FBUSP FCONP FELEP
+##    1:   24   3       2        3     0     0     0     0     0     0     0
+##    2:   NA  NA      NA       NA     0     0     0     0     0     0     0
+##    3:   16   1      13       13     0     0     0     0     0     0     0
+##    4:   31   2       2        1     0     0     0     0     0     0     0
+##    5:   25   3       1        1     0     0     0     0     0     0     0
+##   ---                                                                    
+## 6492:   NA   1       6        3     0     0     0     0     0     0     0
+## 6493:   26   0       9        9     0     0     0     0     0     0     0
+## 6494:   14   1       8        7     0     0     0     0     0     0     0
+## 6495:   NA   2       4        1     0     0     0     0     0     0     0
+## 6496:   NA   2      10       10     0     0     0     0     0     0     1
+##       FFSP FFULP FGASP FHFLP FINSP FKITP FMHP FMRGIP FMRGP FMRGTP FMRGXP
+##    1:    0     0     0     0     0     0    0      0     0      0      0
+##    2:    0     0     0     0     0     0    0      0     0      0      0
+##    3:    0     0     0     0     0     0    0      0     0      0      0
+##    4:    0     0     0     0     0     0    0      0     0      0      0
+##    5:    0     0     0     0     0     0    0      0     0      0      0
+##   ---                                                                   
+## 6492:    0     0     0     0     0     0    0      0     0      0      0
+## 6493:    0     0     0     0     0     0    0      0     0      0      0
+## 6494:    0     1     0     0     0     0    0      0     0      0      0
+## 6495:    0     0     0     0     0     0    0      0     0      0      0
+## 6496:    0     0     0     0     0     0    0      0     0      0      0
+##       FMVYP FPLMP FRMSP FRNTMP FRNTP FSMP FSMXHP FSMXSP FTAXP FTELP FTENP
+##    1:     0     0     0      0     0    0      0      0     0     0     0
+##    2:     0     0     0      0     0    0      0      0     0     0     0
+##    3:     0     0     0      0     0    0      0      0     0     0     0
+##    4:     0     0     0      0     0    0      0      0     0     0     0
+##    5:     0     0     0      0     0    0      0      0     0     0     0
+##   ---                                                                    
+## 6492:     0     0     0      0     0    0      0      0     0     0     0
+## 6493:     0     0     0      0     0    0      0      0     0     0     0
+## 6494:     1     0     0      0     0    1      0      0     1     0     0
+## 6495:     0     0     0      0     0    0      0      0     0     0     0
+## 6496:     0     0     0      0     0    0      0      0     0     0     0
+##       FVACSP FVALP FVEHP FWATP FYBLP wgtp1 wgtp2 wgtp3 wgtp4 wgtp5 wgtp6
+##    1:      0     0     0     0     0    87    28   156    95    26    25
+##    2:      0     0     0     0     1   539   363   293   422   566   289
+##    3:      0     0     0     0     0   187    35   184   178    83    95
+##    4:      0     0     0     0     0   232   406   234   270   249   242
+##    5:      0     0     0     0     0   107   194   129    41   156   174
+##   ---                                                                   
+## 6492:      0     0     0     0     0   154   116   208   241    36    33
+## 6493:      0     0     0     0     0   100    49    52    83    51    79
+## 6494:      0     0     0     0     0    10    15    47    65    32     8
+## 6495:      0     0     0     0     0    40   106    34    36   123    33
+## 6496:      0     0     0     0     1   397   622   589   396   580   105
+##       wgtp7 wgtp8 wgtp9 wgtp10 wgtp11 wgtp12 wgtp13 wgtp14 wgtp15 wgtp16
+##    1:    95    93    93     91     87    166     90     25    153     89
+##    2:    87   242   453    453    334    358    414    102    281     99
+##    3:    31    32   177    118    110    114    184    107     95    115
+##    4:   406   249   287     67     72    413    399     77    245    424
+##    5:    47   113   101     33    115     52    113     95    135    206
+##   ---                                                                   
+## 6492:   140   111    26    201    191    102     73     47    142     84
+## 6493:    59    55    54     13     58     16     96     68     26     78
+## 6494:    35    35     6     37     62     68     52     29     28     23
+## 6495:   233   140   121    125    184    125     36    105    243    218
+## 6496:   335   380   400    107    327    557    339    100    117    389
+##       wgtp17 wgtp18 wgtp19 wgtp20 wgtp21 wgtp22 wgtp23 wgtp24 wgtp25
+##    1:    148     82     25    180     90     24    140     92     25
+##    2:    108    278    131    407    447    264    352    238    390
+##    3:     33    118    120     37    184     35    176    176    110
+##    4:     67     63    226    254    238     69    238    255    239
+##    5:    100    185    135    279    116     33    105    244     38
+##   ---                                                               
+## 6492:    130    134     36     84    104     98     27     34    212
+## 6493:     58     17     14     20     18     59     55     18     52
+## 6494:     26     38     10      7     55     49     26      8     39
+## 6495:    153    110    184    110     38    105     36     37    122
+## 6496:    309     96    552    348    334     97    109    358    107
+##       wgtp26 wgtp27 wgtp28 wgtp29 wgtp30 wgtp31 wgtp32 wgtp33 wgtp34
+##    1:     27     86     84     87     93     90    149     91     28
+##    2:    336    122    374    482    468    335    251    613    104
+##    3:    103     29     30    197    127     92    118    177     99
+##    4:    248     69    234    247    437    423     74     61    401
+##    5:     30    230    123    123    243    120    238     98     90
+##   ---                                                               
+## 6492:    190     37     90    125     27     28    104    102    151
+## 6493:     16     48     65     60    114     78     99     57     79
+## 6494:     57     38     36     50     26      9     10     10     28
+## 6495:     47    214    112    119    112    192    119     35    143
+## 6496:    604    351    360    354    664    333    115    330    588
+##       wgtp35 wgtp36 wgtp37 wgtp38 wgtp39 wgtp40 wgtp41 wgtp42 wgtp43
+##    1:    143     81    144     95     27     22     90    171     27
+##    2:    284    116     91    326    102    361    107    253    321
+##    3:     99    109     34    100    105     33    173     36    168
+##    4:    267     72    388    335    229    236    239     65    259
+##    5:    107     44    122     32    127    195    116     36    135
+##   ---                                                               
+## 6492:    194    123     96     99    190     94     85     92     33
+## 6493:     86     44     27    132     80     91    113     66     52
+## 6494:     35     43     26     29     54     65     14     11     36
+## 6495:    206    244    129    130    233    129     35    115     42
+## 6496:    677    349    314    511    115    349    360     97    119
+##       wgtp44 wgtp45 wgtp46 wgtp47 wgtp48 wgtp49 wgtp50 wgtp51 wgtp52
+##    1:     83    153    148     92     91     91     93     90     26
+##    2:    289     96    343    564    274    118    118    321    261
+##    3:    175     99    103     30     35    155    102     95    107
+##    4:    247    230    225     82    220    233    419    390     69
+##    5:    237     33     33    249    102     84    224    119    250
+##   ---                                                               
+## 6492:     25    139    184     47    121    228     32     35    104
+## 6493:     97     45     84     51     48     69     13     48     15
+## 6494:     53     32     10     30     36      6     33     64     55
+## 6495:     38    123     43    233    115    113    114    193    120
+## 6496:    362    108    574    362    333    324    622    340    102
+##       wgtp53 wgtp54 wgtp55 wgtp56 wgtp57 wgtp58 wgtp59 wgtp60 wgtp61
+##    1:     94    142     24     91     29     84    148     30     93
+##    2:    130    463    294    479    391    307    476    283    116
+##    3:    185    120    114    113     36    115    103     29    183
+##    4:     74    391    276     70    422    409    223    245    269
+##    5:    119    125    126     32    112     33    131     45    101
+##   ---                                                               
+## 6492:    148    179    109    151     89    102    202    140    117
+## 6493:     71     51     16     82     79     13     18     21     15
+## 6494:     47     34     27     27     33     25     11     13     45
+## 6495:     36    144    212    226    122    118    245    127     33
+## 6496:    367    531    619    337    362    635    106    336    378
+##       wgtp62 wgtp63 wgtp64 wgtp65 wgtp66 wgtp67 wgtp68 wgtp69 wgtp70
+##    1:    143     24     88    147    145     91     83     83     86
+##    2:    353    323    374    106    236    380    313     90     94
+##    3:     35    179    169     95    110     28     34    233     97
+##    4:    488    221    250    247    240    415    234    219     66
+##    5:    165    125     41    191    195     49    119     92     44
+##   ---                                                               
+## 6492:     96    244    136     27     39    150    107     52    232
+## 6493:     67     55     19     53     14     51     66     71    100
+## 6494:     51     41      9     30     50     38     31     49     31
+## 6495:    134     33     35    129     38    206    127    116    112
+## 6496:    659    554    356    636    110    372    346    354    108
+##       wgtp71 wgtp72 wgtp73 wgtp74 wgtp75 wgtp76 wgtp77 wgtp78 wgtp79
+##    1:     81     27     93    151     28     79     25    101    157
+##    2:    292    401     81    494    346    496    615    286    454
+##    3:    123    119    168    107     95    101     30    124    106
+##    4:     68    359    385     71    234    421     76     77    242
+##    5:    127     36    119    121    116    209     97    176    144
+##   ---                                                               
+## 6492:    198     88    112     26     64    106    142    106     33
+## 6493:     66    101     62     52    105     75     20    127    105
+## 6494:      7      8     12     37     44     36     28     33     48
+## 6495:    201    123     38    104    186    203    132    118    201
+## 6496:    312    558    372    102    108    381    340    114    563
+##       wgtp80 agricultureLogical
+##    1:    129              FALSE
+##    2:    260                 NA
+##    3:     31              FALSE
+##    4:    231              FALSE
+##    5:     38              FALSE
+##   ---                          
+## 6492:    111                 NA
+## 6493:     68              FALSE
+## 6494:     59              FALSE
+## 6495:    125              FALSE
+## 6496:    358                 NA</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#setkey(DT,agricultureLogical)</span>
+<span class="kw">head</span>(<span class="kw">which</span>(DT$agricultureLogical==<span class="ot">TRUE</span>),<span class="dv">3</span>)</code></pre>
+<pre><code>## [1] 125 238 262</code></pre>
+<h2 id="question-2">Question 2</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(jpeg)
+imagefile =<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(),<span class="st">&#39;image.jpg&#39;</span>)
+<span class="kw">download.file</span>(<span class="st">&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fjeff.jpg&quot;</span>,<span class="dt">method=</span><span class="st">&#39;curl&#39;</span>,<span class="dt">destfile =</span> imagefile )
+im &lt;-<span class="st"> </span><span class="kw">readJPEG</span>(imagefile,<span class="dt">native=</span><span class="ot">TRUE</span>)
+<span class="kw">str</span>(im)</code></pre>
+<pre><code>##  &#39;nativeRaster&#39; int [1:180, 1:180] -11494710 -11494710 -11494710 -11494710 -11494710 -11494710 -11494710 -11494710 -11494710 -11494710 ...
+##  - attr(*, &quot;channels&quot;)= int 3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(im)</code></pre>
+<pre><code>## [1] -11494710 -11494710 -11494710 -11494710 -11494710 -11494710</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">quantile</span>(im,<span class="dt">probs =</span> <span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">80</span>)/<span class="dv">100</span>)</code></pre>
+<pre><code>##       30%       80% 
+## -15258512 -10575416</code></pre>
+<h2 id="question-3">Question 3</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+GrossDomesticProductFile =<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(),<span class="st">&#39;GrossDomesticProduct.csv&#39;</span>)
+<span class="kw">download.file</span>(<span class="st">&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv&quot;</span>,<span class="dt">method=</span><span class="st">&#39;curl&#39;</span>,<span class="dt">destfile =</span> GrossDomesticProductFile)
+educationaldataFile =<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">getwd</span>(),<span class="st">&#39;educationaldata.csv&#39;</span>)
+<span class="kw">download.file</span>(<span class="st">&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot;</span>,<span class="dt">method=</span><span class="st">&#39;curl&#39;</span>,<span class="dt">destfile =</span> educationaldataFile)
+GDP =<span class="st"> </span><span class="kw">read.csv</span>(GrossDomesticProductFile, <span class="dt">skip=</span><span class="dv">5</span>, <span class="dt">header=</span><span class="ot">FALSE</span>, <span class="dt">nrow=</span><span class="dv">231</span>)
+<span class="kw">colnames</span>(GDP) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;country&quot;</span>,<span class="st">&quot;ranking&quot;</span>,<span class="st">&quot;empty&quot;</span>,<span class="st">&quot;economy&quot;</span>,<span class="st">&quot;millions in US dollars&quot;</span>,<span class="st">&#39;empty2&#39;</span>)
+GDP &lt;-<span class="st"> </span>GDP[,<span class="kw">c</span>(<span class="st">&#39;country&#39;</span>,<span class="st">&#39;ranking&#39;</span>,<span class="st">&#39;economy&#39;</span>,<span class="st">&#39;millions in US dollars&#39;</span>)]
+GDPT &lt;-<span class="st"> </span>GDP %&gt;%<span class="st"> </span><span class="kw">filter</span>(ranking !=<span class="st"> &#39;&#39;</span>) %&gt;%<span class="st"> </span><span class="kw">filter</span>(country !=<span class="st"> &#39;&#39;</span>) ##%&gt;% mutate(ranking=as.integer(ranking))
+ED =<span class="st"> </span><span class="kw">read.csv</span>(educationaldataFile)
+<span class="kw">names</span>(ED)</code></pre>
+<pre><code>##  [1] &quot;CountryCode&quot;                                      
+##  [2] &quot;Long.Name&quot;                                        
+##  [3] &quot;Income.Group&quot;                                     
+##  [4] &quot;Region&quot;                                           
+##  [5] &quot;Lending.category&quot;                                 
+##  [6] &quot;Other.groups&quot;                                     
+##  [7] &quot;Currency.Unit&quot;                                    
+##  [8] &quot;Latest.population.census&quot;                         
+##  [9] &quot;Latest.household.survey&quot;                          
+## [10] &quot;Special.Notes&quot;                                    
+## [11] &quot;National.accounts.base.year&quot;                      
+## [12] &quot;National.accounts.reference.year&quot;                 
+## [13] &quot;System.of.National.Accounts&quot;                      
+## [14] &quot;SNA.price.valuation&quot;                              
+## [15] &quot;Alternative.conversion.factor&quot;                    
+## [16] &quot;PPP.survey.year&quot;                                  
+## [17] &quot;Balance.of.Payments.Manual.in.use&quot;                
+## [18] &quot;External.debt.Reporting.status&quot;                   
+## [19] &quot;System.of.trade&quot;                                  
+## [20] &quot;Government.Accounting.concept&quot;                    
+## [21] &quot;IMF.data.dissemination.standard&quot;                  
+## [22] &quot;Source.of.most.recent.Income.and.expenditure.data&quot;
+## [23] &quot;Vital.registration.complete&quot;                      
+## [24] &quot;Latest.agricultural.census&quot;                       
+## [25] &quot;Latest.industrial.data&quot;                           
+## [26] &quot;Latest.trade.data&quot;                                
+## [27] &quot;Latest.water.withdrawal.data&quot;                     
+## [28] &quot;X2.alpha.code&quot;                                    
+## [29] &quot;WB.2.code&quot;                                        
+## [30] &quot;Table.Name&quot;                                       
+## [31] &quot;Short.Name&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">##ED &lt;- ED %&gt;% filter(!grepl(&#39;[Ee]uro|Europe|Asia|income|America|Africa&#39;,Long.Name))
+MDF &lt;-<span class="st"> </span><span class="kw">merge</span>(GDPT,ED,<span class="dt">by.x=</span><span class="st">&#39;country&#39;</span>,<span class="dt">by.y=</span><span class="st">&#39;CountryCode&#39;</span>)
+MDFS &lt;-<span class="st"> </span><span class="kw">select</span>(MDF, country,ranking,Long.Name,Income.Group) 
+MDFSO &lt;-<span class="st"> </span>MDFS  %&gt;%<span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(ranking))
+<span class="kw">nrow</span>(MDFSO)</code></pre>
+<pre><code>## [1] 189</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(<span class="kw">unique</span>(MDFSO$country))</code></pre>
+<pre><code>## [1] 189</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">intersect</span>(ED$CountryCode,GDP$country)</code></pre>
+<pre><code>##   [1] &quot;ABW&quot; &quot;ADO&quot; &quot;AFG&quot; &quot;AGO&quot; &quot;ALB&quot; &quot;ARE&quot; &quot;ARG&quot; &quot;ARM&quot; &quot;ASM&quot; &quot;ATG&quot; &quot;AUS&quot;
+##  [12] &quot;AUT&quot; &quot;AZE&quot; &quot;BDI&quot; &quot;BEL&quot; &quot;BEN&quot; &quot;BFA&quot; &quot;BGD&quot; &quot;BGR&quot; &quot;BHR&quot; &quot;BHS&quot; &quot;BIH&quot;
+##  [23] &quot;BLR&quot; &quot;BLZ&quot; &quot;BMU&quot; &quot;BOL&quot; &quot;BRA&quot; &quot;BRB&quot; &quot;BRN&quot; &quot;BTN&quot; &quot;BWA&quot; &quot;CAF&quot; &quot;CAN&quot;
+##  [34] &quot;CHE&quot; &quot;CHI&quot; &quot;CHL&quot; &quot;CHN&quot; &quot;CIV&quot; &quot;CMR&quot; &quot;COG&quot; &quot;COL&quot; &quot;COM&quot; &quot;CPV&quot; &quot;CRI&quot;
+##  [45] &quot;CUB&quot; &quot;CYM&quot; &quot;CYP&quot; &quot;CZE&quot; &quot;DEU&quot; &quot;DJI&quot; &quot;DMA&quot; &quot;DNK&quot; &quot;DOM&quot; &quot;DZA&quot; &quot;EAP&quot;
+##  [56] &quot;ECA&quot; &quot;ECU&quot; &quot;EGY&quot; &quot;EMU&quot; &quot;ERI&quot; &quot;ESP&quot; &quot;EST&quot; &quot;ETH&quot; &quot;FIN&quot; &quot;FJI&quot; &quot;FRA&quot;
+##  [67] &quot;FRO&quot; &quot;FSM&quot; &quot;GAB&quot; &quot;GBR&quot; &quot;GEO&quot; &quot;GHA&quot; &quot;GIN&quot; &quot;GMB&quot; &quot;GNB&quot; &quot;GNQ&quot; &quot;GRC&quot;
+##  [78] &quot;GRD&quot; &quot;GRL&quot; &quot;GTM&quot; &quot;GUM&quot; &quot;GUY&quot; &quot;HIC&quot; &quot;HKG&quot; &quot;HND&quot; &quot;HRV&quot; &quot;HTI&quot; &quot;HUN&quot;
+##  [89] &quot;IDN&quot; &quot;IMY&quot; &quot;IND&quot; &quot;IRL&quot; &quot;IRN&quot; &quot;IRQ&quot; &quot;ISL&quot; &quot;ISR&quot; &quot;ITA&quot; &quot;JAM&quot; &quot;JOR&quot;
+## [100] &quot;JPN&quot; &quot;KAZ&quot; &quot;KEN&quot; &quot;KGZ&quot; &quot;KHM&quot; &quot;KIR&quot; &quot;KNA&quot; &quot;KOR&quot; &quot;KSV&quot; &quot;KWT&quot; &quot;LAC&quot;
+## [111] &quot;LAO&quot; &quot;LBN&quot; &quot;LBR&quot; &quot;LBY&quot; &quot;LCA&quot; &quot;LIC&quot; &quot;LIE&quot; &quot;LKA&quot; &quot;LMC&quot; &quot;LMY&quot; &quot;LSO&quot;
+## [122] &quot;LTU&quot; &quot;LUX&quot; &quot;LVA&quot; &quot;MAC&quot; &quot;MAR&quot; &quot;MCO&quot; &quot;MDA&quot; &quot;MDG&quot; &quot;MDV&quot; &quot;MEX&quot; &quot;MHL&quot;
+## [133] &quot;MIC&quot; &quot;MKD&quot; &quot;MLI&quot; &quot;MLT&quot; &quot;MMR&quot; &quot;MNA&quot; &quot;MNE&quot; &quot;MNG&quot; &quot;MNP&quot; &quot;MOZ&quot; &quot;MRT&quot;
+## [144] &quot;MUS&quot; &quot;MWI&quot; &quot;MYS&quot; &quot;NAM&quot; &quot;NCL&quot; &quot;NER&quot; &quot;NGA&quot; &quot;NIC&quot; &quot;NLD&quot; &quot;NOR&quot; &quot;NPL&quot;
+## [155] &quot;NZL&quot; &quot;OMN&quot; &quot;PAK&quot; &quot;PAN&quot; &quot;PER&quot; &quot;PHL&quot; &quot;PLW&quot; &quot;PNG&quot; &quot;POL&quot; &quot;PRI&quot; &quot;PRK&quot;
+## [166] &quot;PRT&quot; &quot;PRY&quot; &quot;PYF&quot; &quot;QAT&quot; &quot;ROM&quot; &quot;RUS&quot; &quot;RWA&quot; &quot;SAS&quot; &quot;SAU&quot; &quot;SDN&quot; &quot;SEN&quot;
+## [177] &quot;SGP&quot; &quot;SLB&quot; &quot;SLE&quot; &quot;SLV&quot; &quot;SMR&quot; &quot;SOM&quot; &quot;SRB&quot; &quot;SSA&quot; &quot;STP&quot; &quot;SUR&quot; &quot;SVK&quot;
+## [188] &quot;SVN&quot; &quot;SWE&quot; &quot;SWZ&quot; &quot;SYC&quot; &quot;SYR&quot; &quot;TCA&quot; &quot;TCD&quot; &quot;TGO&quot; &quot;THA&quot; &quot;TJK&quot; &quot;TKM&quot;
+## [199] &quot;TMP&quot; &quot;TON&quot; &quot;TTO&quot; &quot;TUN&quot; &quot;TUR&quot; &quot;TUV&quot; &quot;TZA&quot; &quot;UGA&quot; &quot;UKR&quot; &quot;UMC&quot; &quot;URY&quot;
+## [210] &quot;USA&quot; &quot;UZB&quot; &quot;VCT&quot; &quot;VEN&quot; &quot;VIR&quot; &quot;VNM&quot; &quot;VUT&quot; &quot;WBG&quot; &quot;WLD&quot; &quot;WSM&quot; &quot;YEM&quot;
+## [221] &quot;ZAF&quot; &quot;ZAR&quot; &quot;ZMB&quot; &quot;ZWE&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">MDFSO$Long.Name[<span class="dv">13</span>]</code></pre>
+<pre><code>## [1] St. Kitts and Nevis
+## 234 Levels: American Samoa Antigua and Barbuda ... World</code></pre>
+<h2 id="question-4">Question 4</h2>
+<pre class="sourceCode r"><code class="sourceCode r">incomeRankingSummary &lt;-<span class="st"> </span>MDFSO %&gt;%<span class="st"> </span><span class="kw">group_by</span>(Income.Group) %&gt;%<span class="st"> </span><span class="kw">summarize</span>(<span class="dt">averageRanking=</span><span class="kw">mean</span>(ranking))
+incomeRankingSummary</code></pre>
+<pre><code>## Source: local data frame [5 x 2]
+## 
+##           Income.Group averageRanking
+## 1 High income: nonOECD       91.91304
+## 2    High income: OECD       32.96667
+## 3  Lower middle income      107.70370
+## 4           Low income      133.72973
+## 5  Upper middle income       92.13333</code></pre>
+<h2 id="question-5">Question 5</h2>
+<pre class="sourceCode r"><code class="sourceCode r">MDFSOG &lt;-<span class="st"> </span>MDFSO %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">rankingQuantile =</span> <span class="kw">cut</span>(ranking,<span class="dt">include.lowest =</span> <span class="ot">TRUE</span>,<span class="dt">breaks =</span> <span class="kw">quantile</span>(ranking,<span class="dt">probs=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,<span class="dv">20</span>)/<span class="dv">100</span>)))
+MDFSOGS &lt;-<span class="st"> </span>MDFSOG %&gt;%<span class="st"> </span><span class="kw">select</span>(Income.Group,rankingQuantile)
+<span class="kw">table</span>(MDFSOGS)</code></pre>
+<pre><code>##                       rankingQuantile
+## Income.Group           [1,38.6] (38.6,76.2] (76.2,114] (114,152] (152,190]
+##                               0           0          0         0         0
+##   High income: nonOECD        4           5          8         4         2
+##   High income: OECD          18          10          1         1         0
+##   Lower middle income         5          13         11         9        16
+##   Low income                  0           1          9        16        11
+##   Upper middle income        11           9          8         8         9</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">table</span>(MDFSOGS))</code></pre>
+<pre><code>## [1] 189</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">incomeRankingGroupDF&lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(MDFSOGS))
+incomeRankingGroupDF %&gt;%<span class="st"> </span><span class="kw">filter</span>(Income.Group ==<span class="st"> &#39;Lower middle income&#39;</span> &amp;<span class="st"> </span>rankingQuantile ==<span class="st"> &#39;[1,38.6]&#39;</span>)</code></pre>
+<pre><code>##          Income.Group rankingQuantile Freq
+## 1 Lower middle income        [1,38.6]    5</code></pre>

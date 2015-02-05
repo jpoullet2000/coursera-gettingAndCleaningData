@@ -1,0 +1,14 @@
+---
+title: "Getting and Cleaning Data: Swirl"
+author: "Jean-Baptiste Poullet"
+date: '2015-02-04'
+output: html_document
+---
+
+## Question 1
+
+```{r}
+library(swirl)
+install_from_swirl("Getting and Cleaning Data")
+swirl()
+```

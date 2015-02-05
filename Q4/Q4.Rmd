@@ -1,0 +1,67 @@
+---
+title: "Getting and Cleaning Data: Q4"
+author: "Jean-Baptiste Poullet"
+date: '2015-02-04'
+output: html_document
+---
+
+## Question 1
+
+```{r}
+AmericanCommunitySurveyFile <- file.path(getwd(),"AmericanCommunitySurvey")
+download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv", destfile = AmericanCommunitySurveyFile, method='curl')
+ACS <- read.csv(AmericanCommunitySurveyFile)
+str(ACS)
+strsplit(x=names(ACS),split='wgtp')[[123]]
+```
+## Question 2
+
+```{r}
+library(dplyr)
+GrossDomesticProductFile = file.path(getwd(),'GrossDomesticProduct.csv')
+download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv",method='curl',destfile = GrossDomesticProductFile)
+GDP = read.csv(GrossDomesticProductFile, skip=5, header=FALSE, nrow=231)
+colnames(GDP) = c("country","ranking","empty","countryNames","millions in US dollars",'empty2')
+GDP <- GDP[,c('country','ranking','countryNames','millions in US dollars')]
+GDPT <- GDP %>% filter(ranking != '') %>% filter(country != '')
+GDPTT <- GDPT %>% mutate(`millions in US dollars` = as.numeric(gsub(',','',as.character(`millions in US dollars`))))
+mean(GDPTT$`millions in US dollars`)
+```
+
+
+## Question 3
+```{r}
+countryNames <- GDPTT$countryNames
+length(grep("^United",countryNames))
+```
+
+## Question 4
+```{r}
+educationaldataFile = file.path(getwd(),'educationaldata.csv')
+download.file("https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv",method='curl',destfile = educationaldataFile)
+ED = read.csv(educationaldataFile)
+names(ED)
+fiscalYear = grep('[Ff]iscal [Yy]ear',ED[,'Special.Notes'],value=TRUE)
+fiscalYearJune = grep('[Jj]une',fiscalYear,value=TRUE)
+length(fiscalYearJune)
+```
+
+## Question 5
+```{r}
+library(quantmod)
+library(lubridate)
+amzn = getSymbols("AMZN",auto.assign=FALSE)
+sampleTimes = index(amzn)
+dates <- ymd(sampleTimes)
+sum(year(dates)==2012)
+sum(year(dates)==2012 & as.character(wday(dates,label=TRUE))=='Mon')
+```
+
+
+
+
+
+
+
+
+

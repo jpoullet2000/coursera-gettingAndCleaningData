@@ -1,0 +1,97 @@
+---
+title: "Getting and Cleaning Data: Q1"
+author: "Jean-Baptiste Poullet"
+date: '2015-02-01'
+output: html_document
+---
+
+## Question 1
+
+```{r}
+library(data.table)
+americanCommunitySurveyFile = file.path(getwd(),"americanCommunitySurvey")
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv',destfile = americanCommunitySurveyFile, method="curl")
+df <- read.csv(americanCommunitySurveyFile, header = TRUE)
+
+head(df$VAL)
+sum(df$VAL==24,na.rm=TRUE)
+```
+
+## Question 2
+
+```{r}
+head(df$FES)
+unique(df$FES)
+```
+This is not telling much but the pdf https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf is telling that FES variable is Family type and employment status, so 2 variables in one column which is not matching the tidy data criteria.
+
+## Question 3
+
+```{r}
+library(xlsx)
+NaturalGasAquisitionProgramFile = file.path(getwd(),"NaturalGasAquisitionProgram.xlsx")
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx',destfile = NaturalGasAquisitionProgramFile, method="curl")
+
+xlsxsheet <- read.xlsx(NaturalGasAquisitionProgramFile, sheetIndex=1, header=TRUE, startRow=18, endRow=23)
+dat <- xlsxsheet[,7:15]
+# another alternative
+wb <- loadWorkbook(NaturalGasAquisitionProgramFile)
+sheets <- getSheets(wb)
+tmpdat <- readRows(sheets[[1]], startRow=18, endRow=23, startColumn=7,endColumn=15)
+ngap <- as.data.frame(tmpdat)
+colnames(ngap) <- tmpdat[1,]
+ngap <- ngap[-1,]
+# now the question itself
+sum(dat$Zip*dat$Ext,na.rm=T)
+```
+
+
+## Question 4
+```{r}
+# don't forget to install xml ubuntu or debian-based package: sudo apt-get install libxml2-dev
+library(XML)
+BaltimoreRestaurantsFile <- file.path(getwd(),"BaltimoreRestaurants.xml")
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml',destfile = BaltimoreRestaurantsFile, method="curl") 
+#ow many restaurants have zipcode 21231?
+doc <- xmlTreeParse(BaltimoreRestaurantsFile, useInternal = TRUE)
+rootNode <- xmlRoot(doc)
+xmlName(rootNode)
+names(rootNode)
+rootNode[[1]]
+xmlSApply(rootNode, xmlValue)
+zipcodes <- xpathSApply(rootNode,"//zipcode",xmlValue)
+sum(zipcodes=='21231',na.rm=TRUE)
+```
+
+## Question 5
+
+```{r}
+AmericanCommunitySurveyFile <- file.path(getwd(),"AmericanCommunitySurvey.csv")
+download.file('https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv',destfile = AmericanCommunitySurveyFile, method="curl") 
+DT = fread(AmericanCommunitySurveyFile)
+# Which of the following is the fastest way to calculate the average value of the variable pwgtp15 
+## Proposal 1
+mean(DT[DT$SEX==1,]$pwgtp15)
+mean(DT[DT$SEX==2,]$pwgtp15)
+system.time(mean(DT[DT$SEX==1,]$pwgtp15))
+system.time(mean(DT[DT$SEX==2,]$pwgtp15))
+## Proposal 2 (much faster than P1)
+tapply(DT$pwgtp15,DT$SEX,mean)
+system.time(tapply(DT$pwgtp15,DT$SEX,mean))
+## Proposal 3 (faster than P2)
+sapply(split(DT$pwgtp15,DT$SEX),mean)
+system.time(sapply(split(DT$pwgtp15,DT$SEX),mean))
+## Proposal 4 (as quick as P2)
+DT[,mean(pwgtp15),by=SEX]
+system.time(DT[,mean(pwgtp15),by=SEX])
+## Proposal 5 (does not work)
+# rowMeans(DT)[DT$SEX==1]
+# rowMeans(DT)[DT$SEX==2]
+
+## Proposal 6
+mean(DT$pwgtp15,by=DT$SEX)
+system.time(mean(DT$pwgtp15,by=DT$SEX))
+```
+
+
+
